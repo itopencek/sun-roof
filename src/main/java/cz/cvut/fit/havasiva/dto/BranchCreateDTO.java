@@ -1,6 +1,7 @@
 package cz.cvut.fit.havasiva.dto;
 
 import java.util.List;
+import java.util.Objects;
 
 public class BranchCreateDTO {
 
@@ -30,5 +31,21 @@ public class BranchCreateDTO {
 
     public List<Integer> getEmployeeIds() {
         return employeeIds;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BranchCreateDTO that = (BranchCreateDTO) o;
+        return isWebStore == that.isWebStore &&
+                yearlyProfit == that.yearlyProfit &&
+                Objects.equals(country, that.country) &&
+                Objects.equals(employeeIds, that.employeeIds);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(country, isWebStore, yearlyProfit, employeeIds);
     }
 }

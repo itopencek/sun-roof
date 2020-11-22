@@ -2,6 +2,8 @@ package cz.cvut.fit.havasiva.dto;
 
 import cz.cvut.fit.havasiva.entity.Branch;
 
+import java.util.Objects;
+
 public class CustomerOrderCreateDTO {
 
     private final String productName;
@@ -36,5 +38,22 @@ public class CustomerOrderCreateDTO {
 
     public int getCustomerOrderedFromId() {
         return orderedFromId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CustomerOrderCreateDTO that = (CustomerOrderCreateDTO) o;
+        return Float.compare(that.price, price) == 0 &&
+                orderedFromId == that.orderedFromId &&
+                Objects.equals(productName, that.productName) &&
+                Objects.equals(date, that.date) &&
+                Objects.equals(madeBy, that.madeBy);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productName, price, date, madeBy, orderedFromId);
     }
 }

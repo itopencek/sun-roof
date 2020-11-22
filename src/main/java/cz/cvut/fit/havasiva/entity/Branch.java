@@ -4,6 +4,7 @@ package cz.cvut.fit.havasiva.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Branch {
@@ -74,5 +75,18 @@ public class Branch {
 
     public List<Employee> getEmployees() {
         return employees;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Branch branch = (Branch) o;
+        return id == branch.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

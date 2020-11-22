@@ -1,6 +1,8 @@
 package cz.cvut.fit.havasiva.dto;
 
 
+import java.util.Objects;
+
 public class EmployeeDTO {
 
     private final int id;
@@ -29,5 +31,18 @@ public class EmployeeDTO {
 
     public String getMail() {
         return mail;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EmployeeDTO that = (EmployeeDTO) o;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

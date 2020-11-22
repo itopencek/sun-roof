@@ -3,6 +3,7 @@ package cz.cvut.fit.havasiva.dto;
 import cz.cvut.fit.havasiva.entity.Branch;
 
 import java.util.List;
+import java.util.Objects;
 
 public class CustomerOrderDTO {
 
@@ -44,5 +45,18 @@ public class CustomerOrderDTO {
 
     public int getOrderedFromId() {
         return orderedFromId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CustomerOrderDTO that = (CustomerOrderDTO) o;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
