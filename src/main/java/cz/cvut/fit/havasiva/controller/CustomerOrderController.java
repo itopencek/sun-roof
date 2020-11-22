@@ -42,7 +42,7 @@ public class CustomerOrderController {
         return orderService.create(order);
     }
 
-    @PostMapping("/order/{id}")
+    @PutMapping("/order/{id}")
     CustomerOrderDTO save(@PathVariable int id, @RequestBody CustomerOrderCreateDTO order) throws Exception {
         return orderService.update(id, order);
     }

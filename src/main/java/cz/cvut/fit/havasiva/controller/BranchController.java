@@ -37,7 +37,7 @@ public class BranchController {
         return branchService.create(branch);
     }
 
-    @PostMapping("/branch/{id}")
+    @PutMapping("/branch/{id}")
     BranchDTO save(@PathVariable int id, @RequestBody BranchCreateDTO branch) throws Exception {
         return branchService.update(id, branch);
     }

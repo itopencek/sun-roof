@@ -32,7 +32,7 @@ public class EmployeeController {
         return employeeService.create(employee);
     }
 
-    @PostMapping("/employee/{id}")
+    @PutMapping("/employee/{id}")
     EmployeeDTO save(@PathVariable int id, @RequestBody EmployeeCreateDTO employee) throws Exception {
         return employeeService.update(id, employee);
     }
