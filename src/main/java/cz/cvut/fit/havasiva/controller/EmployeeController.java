@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
+@RequestMapping("/employee")
 public class EmployeeController {
     private final EmployeeService employeeService;
 
@@ -17,27 +18,27 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/employee/all")
+    @GetMapping("/all")
     List<EmployeeDTO> all() {
         return employeeService.findAll();
     }
 
-    @GetMapping("/employee/{id}")
+    @GetMapping("/{id}")
     EmployeeDTO byId(@PathVariable int id) {
         return employeeService.findByIdAsDTO(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("/employee")
+    @PostMapping
     EmployeeDTO save(@RequestBody EmployeeCreateDTO employee) {
         return employeeService.create(employee);
     }
 
-    @PutMapping("/employee/{id}")
+    @PutMapping("/{id}")
     EmployeeDTO save(@PathVariable int id, @RequestBody EmployeeCreateDTO employee) throws Exception {
         return employeeService.update(id, employee);
     }
 
-    @DeleteMapping("/employee/{id}")
+    @DeleteMapping("/{id}")
     void delete(@PathVariable int id) {
         employeeService.deleteById(id);
     }

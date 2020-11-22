@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
+@RequestMapping("/order")
 public class CustomerOrderController {
     private final CustomerOrderService orderService;
 
@@ -17,37 +18,37 @@ public class CustomerOrderController {
         this.orderService = orderService;
     }
 
-    @GetMapping("/order/all")
+    @GetMapping("/all")
     List<CustomerOrderDTO> all() {
         return orderService.findAll();
     }
 
-    @GetMapping("/order/{id}")
+    @GetMapping("/{id}")
     CustomerOrderDTO byId(@PathVariable int id) {
         return orderService.findByIdAsDTO(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/order/all/{branchId}")
+    @GetMapping("/all/{branchId}")
     List<CustomerOrderDTO> byBranchId(@PathVariable int branchId) {
         return orderService.findByOrderedFrom(branchId);
     }
 
-    @GetMapping("/order/{madeBy}")
+    @GetMapping("/{madeBy}")
     CustomerOrderDTO byMadeBy(@PathVariable String madeBy) {
         return orderService.findByMadeBy(madeBy).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("/order")
+    @PostMapping
     CustomerOrderDTO save(@RequestBody CustomerOrderCreateDTO order) throws Exception {
         return orderService.create(order);
     }
 
-    @PutMapping("/order/{id}")
+    @PutMapping("/{id}")
     CustomerOrderDTO save(@PathVariable int id, @RequestBody CustomerOrderCreateDTO order) throws Exception {
         return orderService.update(id, order);
     }
 
-    @DeleteMapping("/order/{id}")
+    @DeleteMapping("/{id}")
     void delete(@PathVariable int id) {
         orderService.deleteById(id);
     }
