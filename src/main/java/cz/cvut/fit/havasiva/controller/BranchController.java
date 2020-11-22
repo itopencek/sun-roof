@@ -30,7 +30,7 @@ public class BranchController {
     }
 
     @GetMapping("/country/{country}")
-    Optional<BranchDTO> byCountry(@PathVariable String country) {
+    List<BranchDTO> byCountry(@PathVariable String country) {
         return branchService.findByCountry(country);
     }
 

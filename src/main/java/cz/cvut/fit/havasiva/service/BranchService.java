@@ -80,8 +80,8 @@ public class BranchService {
         return toDTO(branchRepository.findById(id));
     }
 
-    public Optional<BranchDTO> findByCountry(String country) {
-        return toDTO(branchRepository.findByCountry(country));
+    public List<BranchDTO> findByCountry(String country) {
+        return branchRepository.findByCountry(country).stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     private BranchDTO toDTO(Branch branch) {
