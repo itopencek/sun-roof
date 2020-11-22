@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class CustomerOrderService {
 
     private final CustomerOrderRepository orderRepository;
@@ -46,7 +47,6 @@ public class CustomerOrderService {
         return orderRepository.findByOrderedFrom(branchId).stream().map(this::toDTO).collect(Collectors.toList());
     }
 
-    @Transactional
     public CustomerOrderDTO create(CustomerOrderCreateDTO orderDTO) throws Exception {
         Optional<Branch> optionalBranch = branchService.findById(orderDTO.getCustomerOrderedFromId());
         if(optionalBranch.isEmpty())
@@ -58,7 +58,6 @@ public class CustomerOrderService {
         return toDTO(orderRepository.save(order));
     }
 
-    @Transactional
     public CustomerOrderDTO update(int id, CustomerOrderCreateDTO orderDTO) throws Exception {
         Optional<CustomerOrder> optionalCustomerOrder = findById(id);
         if(optionalCustomerOrder.isEmpty())
@@ -77,6 +76,10 @@ public class CustomerOrderService {
         order.setProductName(orderDTO.getProductName());
 
         return toDTO(order);
+    }
+
+    public void deleteById(int id) {
+        orderRepository.deleteById(id);
     }
 
     private CustomerOrderDTO toDTO(CustomerOrder order) {

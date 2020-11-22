@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
@@ -30,8 +31,6 @@ public class EmployeeService {
                 .collect(Collectors.toList());
     }
 
-    // either use @Transactional or as in create() use .save()
-    @Transactional
     public EmployeeDTO update(int id, EmployeeCreateDTO employeeCreateDTO) throws Exception {
         Optional<Employee> optionalEmployee = employeeRepository.findById(id);
         if(optionalEmployee.isEmpty())
@@ -50,6 +49,10 @@ public class EmployeeService {
                     new Employee(employeeCreateDTO.getFirstName(), employeeCreateDTO.getLastName(), employeeCreateDTO.getMail())
             )
         );
+    }
+
+    public void deleteById(int id) {
+        employeeRepository.deleteById(id);
     }
 
     public List<Employee> findByIds(List<Integer> ids) {

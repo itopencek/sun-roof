@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class BranchService {
 
     private final BranchRepository branchRepository;
@@ -33,8 +34,6 @@ public class BranchService {
                 .collect(Collectors.toList());
     }
 
-    // either use @Transactional or as in create() use .save()
-    @Transactional
     public BranchDTO update(int id, BranchCreateDTO branchCreateDTO) throws Exception {
         Optional<Branch> optionalBranch = branchRepository.findById(id);
         if(optionalBranch.isEmpty())
@@ -63,6 +62,10 @@ public class BranchService {
                     new Branch(branchCreateDTO.getCountry(), branchCreateDTO.getNumOfEmployees(), branchCreateDTO.isWebStore(), employees)
             )
         );
+    }
+
+    public void deleteById(int id) {
+        branchRepository.deleteById(id);
     }
 
     public List<Branch> findByIds(List<Integer> ids) {

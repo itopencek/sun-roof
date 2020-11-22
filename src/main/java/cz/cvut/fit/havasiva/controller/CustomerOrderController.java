@@ -46,4 +46,9 @@ public class CustomerOrderController {
     CustomerOrderDTO save(@PathVariable int id, @RequestBody CustomerOrderCreateDTO order) throws Exception {
         return orderService.update(id, order);
     }
+
+    @DeleteMapping("/order/{id}")
+    void delete(@PathVariable int id) {
+        orderService.deleteById(id);
+    }
 }
