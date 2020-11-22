@@ -28,7 +28,8 @@ public class BranchController {
         return branchService.findByIdAsDTO(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    Optional<BranchDTO> byCountry(@RequestParam String country) {
+    @GetMapping("/branch/country/{country}")
+    Optional<BranchDTO> byCountry(@PathVariable String country) {
         return branchService.findByCountry(country);
     }
 
