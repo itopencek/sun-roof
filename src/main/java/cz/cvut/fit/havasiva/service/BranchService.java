@@ -45,7 +45,7 @@ public class BranchService {
 
         Branch branch = optionalBranch.get();
         branch.setCountry(branchCreateDTO.getCountry());
-        branch.setNumOfEmployees(branchCreateDTO.getNumOfEmployees());
+        branch.setYearlyProfit(branchCreateDTO.getYearlyProfit());
         branch.setWebStore(branchCreateDTO.isWebStore());
         branch.setEmployees(employees);
 
@@ -59,7 +59,7 @@ public class BranchService {
 
         return toDTO(
             branchRepository.save(
-                    new Branch(branchCreateDTO.getCountry(), branchCreateDTO.getNumOfEmployees(), branchCreateDTO.isWebStore(), employees)
+                    new Branch(branchCreateDTO.getCountry(), branchCreateDTO.getYearlyProfit(), branchCreateDTO.isWebStore(), employees)
             )
         );
     }
@@ -88,7 +88,7 @@ public class BranchService {
         return new BranchDTO(branch.getId(),
                 branch.getCountry(),
                 branch.isWebStore(),
-                branch.getNumOfEmployees(),
+                branch.getYearlyProfit(),
                 branch.getEmployees()
                         .stream()
                         .map(Employee::getId)

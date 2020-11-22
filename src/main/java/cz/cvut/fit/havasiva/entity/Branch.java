@@ -19,7 +19,7 @@ public class Branch {
     private boolean isWebStore;
 
     @NotNull
-    private int numOfEmployees;
+    private int yearlyProfit;
 
     @ManyToMany
     @JoinTable(
@@ -33,9 +33,9 @@ public class Branch {
     public Branch() {
     }
 
-    public Branch(@NotNull String country, @NotNull int numOfEmployees, @NotNull boolean isWebStore, List<Employee> employees) {
+    public Branch(@NotNull String country, @NotNull int yearlyProfit, @NotNull boolean isWebStore, List<Employee> employees) {
         this.country = country;
-        this.numOfEmployees = numOfEmployees;
+        this.yearlyProfit = yearlyProfit;
         this.isWebStore = isWebStore;
         this.employees = employees;
     }
@@ -56,12 +56,12 @@ public class Branch {
         this.country = country;
     }
 
-    public int getNumOfEmployees() {
-        return numOfEmployees;
+    public int getYearlyProfit() {
+        return yearlyProfit;
     }
 
-    public void setNumOfEmployees(int numOfEmployees) {
-        this.numOfEmployees = numOfEmployees;
+    public void setYearlyProfit(int yearlyProfit) {
+        this.yearlyProfit = yearlyProfit;
     }
 
     public int getId() {

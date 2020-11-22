@@ -6,13 +6,13 @@ public class BranchCreateDTO {
 
     private final String country;
     private final boolean isWebStore;
-    private final int numOfEmployees;
+    private final int yearlyProfit;
     private List<Integer> employeeIds;
 
-    public BranchCreateDTO( String country, boolean isWebStore, int numOfEmployees, List<Integer> employeeIds ) {
+    public BranchCreateDTO( String country, boolean isWebStore, int yearlyProfit, List<Integer> employeeIds ) {
         this.country = country;
         this.isWebStore = isWebStore;
-        this.numOfEmployees = numOfEmployees;
+        this.yearlyProfit = yearlyProfit;
         this.employeeIds = employeeIds;
     }
 
@@ -20,8 +20,8 @@ public class BranchCreateDTO {
         return country;
     }
 
-    public int getNumOfEmployees() {
-        return numOfEmployees;
+    public int getYearlyProfit() {
+        return yearlyProfit;
     }
 
     public boolean isWebStore() {
