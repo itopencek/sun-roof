@@ -23,7 +23,7 @@ public class Branch {
 
     @ManyToMany
     @JoinTable(
-            name = "sunroof_employee",
+            name = "branch_employee",
             joinColumns = @JoinColumn(name = "branch_id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id")
     )
