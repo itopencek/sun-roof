@@ -15,7 +15,7 @@ public class CustomerOrder {
     @NotNull
     private String productName;
     @NotNull
-    private float price;
+    private double price;
     @NotNull
     private String date;
 
@@ -30,7 +30,7 @@ public class CustomerOrder {
     public CustomerOrder() {
     }
 
-    public CustomerOrder(@NotNull String productName, @NotNull float price, @NotNull String date, @NotNull String madeBy, @NotNull Branch orderedFrom) {
+    public CustomerOrder(@NotNull String productName, @NotNull double price, @NotNull String date, @NotNull String madeBy, @NotNull Branch orderedFrom) {
         this.productName = productName;
         this.price = price;
         this.date = date;
@@ -46,11 +46,11 @@ public class CustomerOrder {
         this.productName = productName;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

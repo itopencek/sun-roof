@@ -7,12 +7,12 @@ import java.util.Objects;
 public class CustomerOrderCreateDTO {
 
     private final String productName;
-    private final float price;
+    private final double price;
     private final String date;
     private final String madeBy;
     private final int orderedFromId;
 
-    public CustomerOrderCreateDTO( String productName, float price, String date, String madeBy, int orderedFromId) {
+    public CustomerOrderCreateDTO( String productName, double price, String date, String madeBy, int orderedFromId) {
         this.productName = productName;
         this.price = price;
         this.date = date;
@@ -24,7 +24,7 @@ public class CustomerOrderCreateDTO {
         return productName;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
@@ -45,7 +45,7 @@ public class CustomerOrderCreateDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CustomerOrderCreateDTO that = (CustomerOrderCreateDTO) o;
-        return Float.compare(that.price, price) == 0 &&
+        return Double.compare(that.price, price) == 0 &&
                 orderedFromId == that.orderedFromId &&
                 Objects.equals(productName, that.productName) &&
                 Objects.equals(date, that.date) &&

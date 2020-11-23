@@ -9,12 +9,12 @@ public class CustomerOrderDTO {
 
     private final int id;
     private final String productName;
-    private final float price;
+    private final double price;
     private final String date;
     private final String madeBy;
     private final int orderedFromId;
 
-    public CustomerOrderDTO(int id, String productName, float price, String date, String madeBy, int orderedFromId) {
+    public CustomerOrderDTO(int id, String productName, double price, String date, String madeBy, int orderedFromId) {
         this.id = id;
         this.productName = productName;
         this.price = price;
@@ -31,7 +31,7 @@ public class CustomerOrderDTO {
         return productName;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
