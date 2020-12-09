@@ -103,7 +103,7 @@ class BranchServiceTest {
     }
 
     @Test
-    void deleteById() {
+    void deleteById() throws Exception{
         branchService.deleteById(branch.getId());
 
         Mockito.verify(branchRepository, Mockito.atLeastOnce()).deleteById(branch.getId());

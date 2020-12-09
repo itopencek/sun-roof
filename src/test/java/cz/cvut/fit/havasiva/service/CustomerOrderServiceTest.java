@@ -131,7 +131,7 @@ class CustomerOrderServiceTest {
     }
 
     @Test
-    void deleteById() {
+    void deleteById() throws Exception{
         orderService.deleteById(order.getId());
 
         Mockito.verify(orderRepository, Mockito.atLeastOnce()).deleteById(order.getId());

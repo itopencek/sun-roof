@@ -81,7 +81,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void deleteById() {
+    void deleteById() throws Exception{
         employeeService.deleteById(employee5.getId());
 
         Mockito.verify(employeeRepository, Mockito.atLeastOnce()).deleteById(employee5.getId());
