@@ -51,7 +51,10 @@ public class EmployeeService {
         );
     }
 
-    public void deleteById(int id) {
+    public void deleteById(int id) throws Exception{
+        Optional<Employee> optionalEmployee = employeeRepository.findById(id);
+        if(optionalEmployee.isEmpty())
+            throw new Exception("Employee was not found!");
         employeeRepository.deleteById(id);
     }
 

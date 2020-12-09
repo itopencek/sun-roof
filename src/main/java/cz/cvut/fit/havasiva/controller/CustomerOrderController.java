@@ -39,17 +39,30 @@ public class CustomerOrderController {
     }
 
     @PostMapping
-    CustomerOrderDTO save(@RequestBody CustomerOrderCreateDTO order) throws Exception {
-        return orderService.create(order);
+    @ResponseStatus(HttpStatus.CREATED)
+    CustomerOrderDTO save(@RequestBody CustomerOrderCreateDTO order) {
+        try {
+            return orderService.create(order);
+        } catch(Exception e) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+    }
     }
 
     @PutMapping("/{id}")
-    CustomerOrderDTO save(@PathVariable int id, @RequestBody CustomerOrderCreateDTO order) throws Exception {
-        return orderService.update(id, order);
+    CustomerOrderDTO update(@PathVariable int id, @RequestBody CustomerOrderCreateDTO order) {
+        try {
+            return orderService.update(id, order);
+        } catch(Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
     void delete(@PathVariable int id) {
-        orderService.deleteById(id);
+        try {
+            orderService.deleteById(id);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 }

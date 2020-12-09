@@ -29,18 +29,27 @@ public class EmployeeController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     EmployeeDTO save(@RequestBody EmployeeCreateDTO employee) {
         return employeeService.create(employee);
     }
 
     @PutMapping("/{id}")
-    EmployeeDTO save(@PathVariable int id, @RequestBody EmployeeCreateDTO employee) throws Exception {
-        return employeeService.update(id, employee);
+    EmployeeDTO update(@PathVariable int id, @RequestBody EmployeeCreateDTO employee) {
+        try {
+            return employeeService.update(id, employee);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
     void delete(@PathVariable int id) {
-        employeeService.deleteById(id);
+        try {
+            employeeService.deleteById(id);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
 

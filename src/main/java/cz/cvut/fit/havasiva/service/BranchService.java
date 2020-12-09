@@ -64,7 +64,10 @@ public class BranchService {
         );
     }
 
-    public void deleteById(int id) {
+    public void deleteById(int id) throws Exception {
+        Optional<Employee> optionalEmployee = employeeService.findById(id);
+        if(optionalEmployee.isEmpty())
+            throw new Exception("Branch not found!");
         branchRepository.deleteById(id);
     }
 

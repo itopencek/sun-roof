@@ -35,18 +35,31 @@ public class BranchController {
     }
 
     @PostMapping
-    BranchDTO save(@RequestBody BranchCreateDTO branch) throws Exception {
-        return branchService.create(branch);
+    @ResponseStatus(HttpStatus.CREATED)
+    BranchDTO save(@RequestBody BranchCreateDTO branch) {
+        try{
+            return branchService.create(branch);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
-    BranchDTO save(@PathVariable int id, @RequestBody BranchCreateDTO branch) throws Exception {
-        return branchService.update(id, branch);
+    BranchDTO update(@PathVariable int id, @RequestBody BranchCreateDTO branch) {
+        try{
+            return branchService.update(id, branch);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
     void delete(@PathVariable int id) {
-        branchService.deleteById(id);
+        try {
+            branchService.deleteById(id);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
 }

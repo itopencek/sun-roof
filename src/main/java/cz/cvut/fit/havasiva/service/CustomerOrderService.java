@@ -78,7 +78,10 @@ public class CustomerOrderService {
         return toDTO(order);
     }
 
-    public void deleteById(int id) {
+    public void deleteById(int id) throws Exception{
+        Optional<CustomerOrder> optionalOrder = orderRepository.findById(id);
+        if(optionalOrder.isEmpty())
+                throw new Exception("Order not found!");
         orderRepository.deleteById(id);
     }
 
