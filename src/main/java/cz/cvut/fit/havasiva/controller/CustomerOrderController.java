@@ -33,7 +33,7 @@ public class CustomerOrderController {
         return orderService.findByOrderedFrom(branchId);
     }
 
-    @GetMapping("/{madeBy}")
+    @GetMapping("/employee/{madeBy}")
     CustomerOrderDTO byMadeBy(@PathVariable String madeBy) {
         return orderService.findByMadeBy(madeBy).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
