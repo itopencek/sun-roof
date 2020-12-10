@@ -120,19 +120,20 @@ class CustomerOrderControllerTest {
 
     @Test
     void byMadeBy() throws Exception {
-        BDDMockito.given(customerOrderService.findByMadeBy(customerOrderDTO.getMadeBy())).willReturn(Optional.of(customerOrderDTO));
+        List<CustomerOrderDTO> orders = Arrays.asList(customerOrderDTO);
+        BDDMockito.given(customerOrderService.findByMadeBy(customerOrderDTO.getMadeBy())).willReturn((orders));
 
         mockMvc.perform(
                 MockMvcRequestBuilders
-                        .get("/order/employee/{madeBy}", customerOrderDTO.getMadeBy())
+                        .get("/order/customer/{madeBy}", customerOrderDTO.getMadeBy())
                         .accept("application/json;charset=UTF-8")
         ).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is(customerOrderDTO.getId())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.productName", CoreMatchers.is(customerOrderDTO.getProductName())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.price", CoreMatchers.is(customerOrderDTO.getPrice())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.date", CoreMatchers.is(customerOrderDTO.getDate())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.madeBy", CoreMatchers.is(customerOrderDTO.getMadeBy())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.orderedFromId", CoreMatchers.is(customerOrderDTO.getOrderedFromId())));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id", CoreMatchers.is(customerOrderDTO.getId())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].productName", CoreMatchers.is(customerOrderDTO.getProductName())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].price", CoreMatchers.is(customerOrderDTO.getPrice())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].date", CoreMatchers.is(customerOrderDTO.getDate())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].madeBy", CoreMatchers.is(customerOrderDTO.getMadeBy())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].orderedFromId", CoreMatchers.is(customerOrderDTO.getOrderedFromId())));
 
 
         BDDMockito.verify(customerOrderService, Mockito.atLeastOnce()).findByMadeBy(customerOrderDTO.getMadeBy());

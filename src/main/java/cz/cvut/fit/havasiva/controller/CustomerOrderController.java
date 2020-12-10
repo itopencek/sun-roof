@@ -33,9 +33,13 @@ public class CustomerOrderController {
         return orderService.findByOrderedFrom(branchId);
     }
 
-    @GetMapping("/employee/{madeBy}")
-    CustomerOrderDTO byMadeBy(@PathVariable String madeBy) {
-        return orderService.findByMadeBy(madeBy).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    @GetMapping("/customer/{madeBy}")
+    List<CustomerOrderDTO> byMadeBy(@PathVariable String madeBy) {
+        try {
+            return orderService.findByMadeBy(madeBy);
+        } catch(Exception e) {
+            throw new ResponseStatusException((HttpStatus.NOT_FOUND));
+        }
     }
 
     @PostMapping

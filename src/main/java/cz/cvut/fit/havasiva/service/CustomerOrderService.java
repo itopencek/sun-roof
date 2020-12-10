@@ -39,8 +39,8 @@ public class CustomerOrderService {
         return toDTO(findById(id));
     }
 
-    public Optional<CustomerOrderDTO> findByMadeBy(String madeBy) {
-        return toDTO(orderRepository.findByMadeBy(madeBy));
+    public List<CustomerOrderDTO> findByMadeBy(String madeBy) {
+        return orderRepository.findByMadeBy(madeBy).stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     public List<CustomerOrderDTO> findByOrderedFrom(int branchId) {
