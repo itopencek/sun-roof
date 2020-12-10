@@ -126,6 +126,27 @@ class BranchControllerTest {
     }
 
     @Test
+    void saveException() throws Exception {
+        BranchCreateDTO branchCreateDTO = new BranchCreateDTO(branchDTO.getCountry(), branchDTO.isWebStore(), branchDTO.getYearlyProfit(), branchDTO.getEmployeeIds());
+        BDDMockito.given(branchService.create(branchCreateDTO)).willThrow(new Exception("Some employees were not found"));
+
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .post("/branch")
+                        .contentType("application/json;charset=UTF-8")
+                        .accept("application/json;charset=UTF-8")
+                        .content("{\"country\": \"" + branchDTO.getCountry()
+                                + "\", \"isWebStore\": \"" + branchDTO.isWebStore()
+                                + "\", \"yearlyProfit\": \"" + branchDTO.getYearlyProfit()
+                                + "\", \"employeeIds\": " + branchDTO.getEmployeeIds()
+                                +"}")
+        ).andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.status().reason(CoreMatchers.is("Some employees were not found")));
+
+        BDDMockito.verify(branchService, Mockito.atLeastOnce()).create(branchCreateDTO);
+    }
+
+    @Test
     void update() throws Exception {
         BranchCreateDTO branchCreateDTO = new BranchCreateDTO(branchDTO.getCountry(), branchDTO.isWebStore(), branchDTO.getYearlyProfit(), branchDTO.getEmployeeIds());
         BDDMockito.given(branchService.update(branchDTO.getId(), branchCreateDTO)).willReturn(branchDTO);
@@ -146,6 +167,27 @@ class BranchControllerTest {
     }
 
     @Test
+    void updateException() throws Exception {
+        BranchCreateDTO branchCreateDTO = new BranchCreateDTO(branchDTO.getCountry(), branchDTO.isWebStore(), branchDTO.getYearlyProfit(), branchDTO.getEmployeeIds());
+        BDDMockito.given(branchService.update(branchDTO.getId(), branchCreateDTO)).willThrow(new Exception("No branch found!"));
+
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .put("/branch/{id}", branchDTO.getId())
+                        .contentType("application/json;charset=UTF-8")
+                        .accept("application/json;charset=UTF-8")
+                        .content("{\"country\": \"" + branchDTO.getCountry()
+                                + "\", \"isWebStore\": \"" + branchDTO.isWebStore()
+                                + "\", \"yearlyProfit\": \"" + branchDTO.getYearlyProfit()
+                                + "\", \"employeeIds\": " + branchDTO.getEmployeeIds()
+                                +"}")
+        ).andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.status().reason(CoreMatchers.is("No branch found!")));
+
+        BDDMockito.verify(branchService, Mockito.atLeastOnce()).update(branchDTO.getId(), branchCreateDTO);
+    }
+
+    @Test
     void delete() throws Exception {
         BDDMockito.doNothing().when(branchService).deleteById(branchDTO.getId());
 
@@ -155,6 +197,21 @@ class BranchControllerTest {
                         .contentType("application/json;charset=UTF-8")
                         .accept("application/json;charset=UTF-8")
         ).andExpect(MockMvcResultMatchers.status().isOk());
+
+        BDDMockito.verify(branchService, Mockito.atLeastOnce()).deleteById(branchDTO.getId());
+    }
+
+    @Test
+    void deleteException() throws Exception {
+        BDDMockito.doThrow(new Exception("Branch not found!")).when(branchService).deleteById(branchDTO.getId());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .delete("/branch/{id}", branchDTO.getId())
+                        .contentType("application/json;charset=UTF-8")
+                        .accept("application/json;charset=UTF-8")
+        ).andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.status().reason(CoreMatchers.is("Branch not found!")));
 
         BDDMockito.verify(branchService, Mockito.atLeastOnce()).deleteById(branchDTO.getId());
     }

@@ -122,6 +122,23 @@ class EmployeeControllerTest {
     }
 
     @Test
+    void updateException() throws Exception {
+        EmployeeCreateDTO employeeCreateDTO = new EmployeeCreateDTO(employee1.getFirstName(), employee1.getLastName(), employee1.getMail());
+        BDDMockito.given(employeeService.update(employee1.getId(), employeeCreateDTO)).willThrow(new Exception("No employee found!"));
+
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .put("/employee/{id}", employee1.getId())
+                        .contentType("application/json;charset=UTF-8")
+                        .accept("application/json;charset=UTF-8")
+                        .content("{\"firstName\": \"" + employee1.getFirstName() + "\", \"lastName\": \"" + employee1.getLastName() + "\", \"mail\": \"" + employee1.getMail() + "\"}")
+        ).andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.status().reason(CoreMatchers.is("No employee found!")));
+
+        BDDMockito.verify(employeeService, Mockito.atLeastOnce()).update(employee1.getId(), employeeCreateDTO);
+    }
+
+    @Test
     void delete() throws Exception {
         BDDMockito.doNothing().when(employeeService).deleteById(employee1.getId());
 
@@ -135,4 +152,18 @@ class EmployeeControllerTest {
         BDDMockito.verify(employeeService, Mockito.atLeastOnce()).deleteById(employee1.getId());
     }
 
+    @Test
+    void deleteException() throws Exception {
+        BDDMockito.doThrow(new Exception("Employee was not found!")).when(employeeService).deleteById(employee1.getId());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .delete("/employee/{id}", employee1.getId())
+                        .contentType("application/json;charset=UTF-8")
+                        .accept("application/json;charset=UTF-8")
+        ).andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.status().reason(CoreMatchers.is("Employee was not found!")));
+
+        BDDMockito.verify(employeeService, Mockito.atLeastOnce()).deleteById(employee1.getId());
+    }
 }

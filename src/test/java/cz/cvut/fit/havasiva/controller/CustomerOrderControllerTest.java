@@ -155,6 +155,23 @@ class CustomerOrderControllerTest {
     }
 
     @Test
+    void saveException() throws Exception {
+        CustomerOrderCreateDTO customerOrderCreateDTO = new CustomerOrderCreateDTO(customerOrderDTO.getProductName(), customerOrderDTO.getPrice(), customerOrderDTO.getDate(), customerOrderDTO.getMadeBy(), customerOrderDTO.getOrderedFromId());
+        BDDMockito.given(customerOrderService.create(customerOrderCreateDTO)).willThrow(new Exception("No branch found!"));
+
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .post("/order")
+                        .contentType("application/json;charset=UTF-8")
+                        .accept("application/json;charset=UTF-8")
+                        .content("{\"productName\": \"" + customerOrderDTO.getProductName() + "\", \"price\": " + customerOrderDTO.getPrice() + ", \"date\": \"" + customerOrderDTO.getDate() + "\", \"madeBy\": \""+ customerOrderDTO.getMadeBy() +"\", \"orderedFromId\": \""+ customerOrderDTO.getOrderedFromId() +"\"}")
+        ).andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.status().reason(CoreMatchers.is("No branch found!")));
+
+        BDDMockito.verify(customerOrderService, Mockito.atLeastOnce()).create(customerOrderCreateDTO);
+    }
+
+    @Test
     void update() throws Exception {
         CustomerOrderCreateDTO customerOrderCreateDTO = new CustomerOrderCreateDTO(customerOrderDTO.getProductName(), customerOrderDTO.getPrice(), customerOrderDTO.getDate(), customerOrderDTO.getMadeBy(), customerOrderDTO.getOrderedFromId());
         BDDMockito.given(customerOrderService.update(customerOrderDTO.getId(), customerOrderCreateDTO)).willReturn(customerOrderDTO);
@@ -171,6 +188,23 @@ class CustomerOrderControllerTest {
     }
 
     @Test
+    void updateException() throws Exception {
+        CustomerOrderCreateDTO customerOrderCreateDTO = new CustomerOrderCreateDTO(customerOrderDTO.getProductName(), customerOrderDTO.getPrice(), customerOrderDTO.getDate(), customerOrderDTO.getMadeBy(), customerOrderDTO.getOrderedFromId());
+        BDDMockito.given(customerOrderService.update(customerOrderDTO.getId(), customerOrderCreateDTO)).willThrow(new Exception("CustomerOrder wasn't found"));
+
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .put("/order/{id}", customerOrderDTO.getId())
+                        .contentType("application/json;charset=UTF-8")
+                        .accept("application/json;charset=UTF-8")
+                        .content("{\"productName\": \"" + customerOrderDTO.getProductName() + "\", \"price\": " + customerOrderDTO.getPrice() + ", \"date\": \"" + customerOrderDTO.getDate() + "\", \"madeBy\": \""+ customerOrderDTO.getMadeBy() +"\", \"orderedFromId\": \""+ customerOrderDTO.getOrderedFromId() +"\"}")
+        ).andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.status().reason(CoreMatchers.is("CustomerOrder wasn't found")));
+
+        BDDMockito.verify(customerOrderService, Mockito.atLeastOnce()).update(customerOrderDTO.getId(), customerOrderCreateDTO);
+    }
+
+    @Test
     void delete() throws Exception {
         BDDMockito.doNothing().when(customerOrderService).deleteById(customerOrderDTO.getId());
 
@@ -180,6 +214,21 @@ class CustomerOrderControllerTest {
                         .contentType("application/json;charset=UTF-8")
                         .accept("application/json;charset=UTF-8")
         ).andExpect(MockMvcResultMatchers.status().isOk());
+
+        BDDMockito.verify(customerOrderService, Mockito.atLeastOnce()).deleteById(customerOrderDTO.getId());
+    }
+
+    @Test
+    void deleteException() throws Exception {
+        BDDMockito.doThrow(new Exception("Order not found!")).when(customerOrderService).deleteById(customerOrderDTO.getId());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .delete("/order/{id}", customerOrderDTO.getId())
+                        .contentType("application/json;charset=UTF-8")
+                        .accept("application/json;charset=UTF-8")
+        ).andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.status().reason(CoreMatchers.is("Order not found!")));
 
         BDDMockito.verify(customerOrderService, Mockito.atLeastOnce()).deleteById(customerOrderDTO.getId());
     }
