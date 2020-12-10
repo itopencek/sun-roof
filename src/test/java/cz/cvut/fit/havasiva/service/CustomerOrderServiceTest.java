@@ -132,6 +132,8 @@ class CustomerOrderServiceTest {
 
     @Test
     void deleteById() throws Exception{
+        BDDMockito.given(orderRepository.findById(order.getId())).willReturn(Optional.of(order));
+
         orderService.deleteById(order.getId());
 
         Mockito.verify(orderRepository, Mockito.atLeastOnce()).deleteById(order.getId());

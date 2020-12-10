@@ -82,6 +82,8 @@ class EmployeeServiceTest {
 
     @Test
     void deleteById() throws Exception{
+        BDDMockito.given(employeeRepository.findById(employee5.getId())).willReturn(Optional.of(employee5));
+
         employeeService.deleteById(employee5.getId());
 
         Mockito.verify(employeeRepository, Mockito.atLeastOnce()).deleteById(employee5.getId());

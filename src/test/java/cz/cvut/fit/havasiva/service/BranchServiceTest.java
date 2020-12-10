@@ -104,6 +104,8 @@ class BranchServiceTest {
 
     @Test
     void deleteById() throws Exception{
+        BDDMockito.given(branchRepository.findById(branch.getId())).willReturn(Optional.of(branch));
+
         branchService.deleteById(branch.getId());
 
         Mockito.verify(branchRepository, Mockito.atLeastOnce()).deleteById(branch.getId());
