@@ -78,10 +78,11 @@ class CustomerOrderServiceTest {
     @Test
     void findByMadeBy() {
         CustomerOrderDTO customerOrderDTO = new CustomerOrderDTO(order.getId(), order.getProductName(), order.getPrice(), order.getDate(), order.getMadeBy(), order.getCustomerOrderedFrom().getId());
+        List<CustomerOrderDTO> orders2 = Arrays.asList(customerOrderDTO);
 
         BDDMockito.given(orderRepository.findByMadeBy(order.getMadeBy())).willReturn(Optional.of(order));
 
-        Assertions.assertEquals(Optional.of(customerOrderDTO), orderService.findByMadeBy(order.getMadeBy()));
+        Assertions.assertEquals(orders2, orderService.findByMadeBy(order.getMadeBy()));
 
         Mockito.verify(orderRepository, Mockito.atLeastOnce()).findByMadeBy(order.getMadeBy());
     }
