@@ -15,5 +15,5 @@ public interface BranchRepository extends JpaRepository<Branch, Integer> {
 
     List<Branch> findByCountry(String country);
 
-    List<Branch> findBranchesByEmployee(Optional<Employee> employee);
+    List<Branch> findBranchesByEmployees(Optional<Employee> employee);
 }

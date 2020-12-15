@@ -128,11 +128,11 @@ class BranchServiceTest {
         List<Integer> empl5Id = Arrays.asList(employee5.getId());
         List<BranchDTO> branchesDTO = Arrays.asList(new BranchDTO(branch.getId(), branch.getCountry(), branch.isWebStore(), branch.getYearlyProfit(), empl5Id));
         BDDMockito.given(employeeService.findById(employee5.getId())).willReturn(Optional.of(employee5));
-        BDDMockito.given(branchRepository.findBranchesByEmployee(Optional.of(employee5))).willReturn(branches);
+        BDDMockito.given(branchRepository.findBranchesByEmployees(Optional.of(employee5))).willReturn(branches);
 
         Assertions.assertEquals(branchesDTO, branchService.findByEmployeeId(employee5.getId()));
 
-        Mockito.verify(branchRepository, Mockito.atLeastOnce()).findBranchesByEmployee(Optional.of(employee5));
+        Mockito.verify(branchRepository, Mockito.atLeastOnce()).findBranchesByEmployees(Optional.of(employee5));
     }
 
     @Test
