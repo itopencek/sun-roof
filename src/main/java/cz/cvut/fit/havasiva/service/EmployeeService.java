@@ -23,6 +23,10 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
+    /*public List<EmployeeDTO> worksAt() {
+        return employeeRepository.
+    }*/
+
     public List<EmployeeDTO> findAll() {
         return employeeRepository
                 .findAll()

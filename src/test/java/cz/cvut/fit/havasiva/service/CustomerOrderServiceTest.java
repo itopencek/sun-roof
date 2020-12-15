@@ -33,6 +33,8 @@ class CustomerOrderServiceTest {
     private CustomerOrderRepository orderRepository;
     @MockBean
     private BranchRepository branchRepository;
+    @MockBean
+    private BranchService branchService;
 
     Employee employee4 = new Employee("Saul", "Goodman", "lawyer@saulgoodman.com");
     Employee employee5 = new Employee("Josh", "Nice", "josh.nice96@gmail.com");
@@ -88,7 +90,7 @@ class CustomerOrderServiceTest {
     }
 
     @Test
-    void findByOrderedFrom() {
+    void findByOrderedFrom() throws Exception {
         List<CustomerOrderDTO> customerOrderDTOs = Arrays.asList(
                 new CustomerOrderDTO(order.getId(), order.getProductName(), order.getPrice(),order.getDate(), order.getMadeBy(), order.getCustomerOrderedFrom().getId()),
                 new CustomerOrderDTO(order2.getId(), order2.getProductName(), order2.getPrice(),order2.getDate(), order2.getMadeBy(), order2.getCustomerOrderedFrom().getId())
@@ -96,11 +98,13 @@ class CustomerOrderServiceTest {
 
         CustomerOrderDTO customerOrderDTO = new CustomerOrderDTO(order.getId(), order.getProductName(), order.getPrice(), order.getDate(), order.getMadeBy(), order.getCustomerOrderedFrom().getId());
 
-        BDDMockito.given(orderRepository.findByOrderedFrom(order.getCustomerOrderedFrom().getId())).willReturn(orders);
+        BDDMockito.given(orderRepository.findByOrderedFrom(Optional.of(branch))).willReturn(orders);
+        BDDMockito.given(branchService.findById(branch.getId())).willReturn(Optional.of(branch));
 
         Assertions.assertEquals(customerOrderDTOs, orderService.findByOrderedFrom(order.getCustomerOrderedFrom().getId()));
 
-        Mockito.verify(orderRepository, Mockito.atLeastOnce()).findByOrderedFrom(order.getCustomerOrderedFrom().getId());
+        Mockito.verify(orderRepository, Mockito.atLeastOnce()).findByOrderedFrom(Optional.of(branch));
+        Mockito.verify(branchService, Mockito.atLeastOnce()).findById(branch.getId());
     }
 
     @Test

@@ -30,7 +30,11 @@ public class CustomerOrderController {
 
     @GetMapping("/all/{branchId}")
     List<CustomerOrderDTO> byBranchId(@PathVariable int branchId) {
-        return orderService.findByOrderedFrom(branchId);
+         try{
+            return orderService.findByOrderedFrom(branchId);
+        } catch(Exception e) {
+            throw new ResponseStatusException((HttpStatus.NOT_FOUND));
+        }
     }
 
     @GetMapping("/customer/{madeBy}")

@@ -43,8 +43,13 @@ public class CustomerOrderService {
         return orderRepository.findByMadeBy(madeBy).stream().map(this::toDTO).collect(Collectors.toList());
     }
 
-    public List<CustomerOrderDTO> findByOrderedFrom(int branchId) {
-        return orderRepository.findByOrderedFrom(branchId).stream().map(this::toDTO).collect(Collectors.toList());
+    public List<CustomerOrderDTO> findByOrderedFrom(int branchId) throws Exception {
+        Optional<Branch> branch = branchService.findById(branchId);
+
+        if(branch.isEmpty())
+            throw new Exception("Branch was not found");
+
+        return orderRepository.findByOrderedFrom(branch).stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     public CustomerOrderDTO create(CustomerOrderCreateDTO orderDTO) throws Exception {
