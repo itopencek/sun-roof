@@ -112,12 +112,12 @@ class CustomerOrderServiceTest {
         CustomerOrderDTO customerOrderDTO = new CustomerOrderDTO(order.getId(), order.getProductName(), order.getPrice(), order.getDate(), order.getMadeBy(), order.getCustomerOrderedFrom().getId());
         CustomerOrderCreateDTO customerOrderCreateDTO = new CustomerOrderCreateDTO(order.getProductName(), order.getPrice(), order.getDate(), order.getMadeBy(), order.getCustomerOrderedFrom().getId());
 
-        BDDMockito.given(branchRepository.findById(customerOrderCreateDTO.getCustomerOrderedFromId())).willReturn(Optional.of(branch));
+        BDDMockito.given(branchService.findById(customerOrderCreateDTO.getCustomerOrderedFromId())).willReturn(Optional.of(branch));
         BDDMockito.given(orderRepository.save(order)).willReturn(order);
 
         Assertions.assertEquals(customerOrderDTO, orderService.create(customerOrderCreateDTO));
 
-        Mockito.verify(branchRepository, Mockito.atLeastOnce()).findById(customerOrderCreateDTO.getCustomerOrderedFromId());
+        Mockito.verify(branchService, Mockito.atLeastOnce()).findById(customerOrderCreateDTO.getCustomerOrderedFromId());
         Mockito.verify(orderRepository, Mockito.atLeastOnce()).save(order);
     }
 
@@ -126,13 +126,13 @@ class CustomerOrderServiceTest {
         CustomerOrderDTO customerOrderDTO = new CustomerOrderDTO(order.getId(), order.getProductName(), order.getPrice(), order.getDate(), order.getMadeBy(), order.getCustomerOrderedFrom().getId());
         CustomerOrderCreateDTO customerOrderCreateDTO = new CustomerOrderCreateDTO(order.getProductName(), order.getPrice(), order.getDate(), order.getMadeBy(), order.getCustomerOrderedFrom().getId());
 
-        BDDMockito.given(branchRepository.findById(customerOrderCreateDTO.getCustomerOrderedFromId())).willReturn(Optional.of(branch));
+        BDDMockito.given(branchService.findById(customerOrderCreateDTO.getCustomerOrderedFromId())).willReturn(Optional.of(branch));
         BDDMockito.given(orderRepository.findById(order.getId())).willReturn(Optional.of(order));
 
         Assertions.assertEquals(customerOrderDTO, orderService.update(order.getId(), customerOrderCreateDTO));
 
         Mockito.verify(orderRepository, Mockito.atLeastOnce()).findById(order.getId());
-        Mockito.verify(branchRepository, Mockito.atLeastOnce()).findById(customerOrderCreateDTO.getCustomerOrderedFromId());
+        Mockito.verify(branchService, Mockito.atLeastOnce()).findById(customerOrderCreateDTO.getCustomerOrderedFromId());
     }
 
     @Test
