@@ -113,6 +113,18 @@ class EmployeeServiceTest {
     }
 
     @Test
+    void findEmployeesByFirstName() {
+        List<Employee> employees = Arrays.asList(employee5);
+        List<EmployeeDTO> employeesDTO = Arrays.asList(new EmployeeDTO(employee5.getId(), employee5.getFirstName(), employee5.getLastName(), employee5.getMail()));
+
+        BDDMockito.given(employeeRepository.findEmployeesByFirstName(employee5.getFirstName())).willReturn(employees);
+
+        Assertions.assertEquals(employeesDTO, employeeService.findEmployeesByFirstName(employee5.getFirstName()));
+
+        Mockito.verify(employeeRepository, Mockito.atLeastOnce()).findEmployeesByFirstName(employee5.getFirstName());
+    }
+
+    @Test
     void findByIdAsDTO() {
         EmployeeDTO employee5DTO = new EmployeeDTO(employee5.getId(), employee5.getFirstName(), employee5.getLastName(), employee5.getMail());
 

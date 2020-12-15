@@ -23,10 +23,6 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    /*public List<EmployeeDTO> worksAt() {
-        return employeeRepository.
-    }*/
-
     public List<EmployeeDTO> findAll() {
         return employeeRepository
                 .findAll()
@@ -68,6 +64,10 @@ public class EmployeeService {
 
     public Optional<Employee> findById(int id) {
         return employeeRepository.findById(id);
+    }
+
+    public List<EmployeeDTO> findEmployeesByFirstName(String firstName) {
+        return employeeRepository.findEmployeesByFirstName(firstName).stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     public Optional<EmployeeDTO> findByIdAsDTO(int id) {

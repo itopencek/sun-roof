@@ -2,6 +2,7 @@ package cz.cvut.fit.havasiva.controller;
 
 import cz.cvut.fit.havasiva.dto.EmployeeCreateDTO;
 import cz.cvut.fit.havasiva.dto.EmployeeDTO;
+import cz.cvut.fit.havasiva.entity.Employee;
 import cz.cvut.fit.havasiva.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,15 @@ public class EmployeeController {
     @GetMapping("/{id}")
     EmployeeDTO byId(@PathVariable int id) {
         return employeeService.findByIdAsDTO(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/name/{firstName}")
+    List<EmployeeDTO> byFirstName(@PathVariable String firstName) {
+        List<EmployeeDTO> employees = employeeService.findEmployeesByFirstName(firstName);
+        if(employees.size() > 0)
+            return employees;
+        else
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping

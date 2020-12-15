@@ -86,6 +86,24 @@ class EmployeeControllerTest {
     }
 
     @Test
+    void byFirstName() throws Exception{
+        List<EmployeeDTO> employees = Arrays.asList(new EmployeeDTO(employee2.getId(), employee2.getFirstName(), employee2.getLastName(), employee2.getMail()));
+        BDDMockito.given(employeeService.findEmployeesByFirstName(employee2.getFirstName())).willReturn(employees);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .get("/employee/name/{firstName}", employee2.getFirstName())
+                        .accept("application/json;charset=UTF-8")
+        ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id", CoreMatchers.is(employee2.getId())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].firstName", CoreMatchers.is(employee2.getFirstName())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].lastName", CoreMatchers.is(employee2.getLastName())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].mail", CoreMatchers.is(employee2.getMail())));
+
+        BDDMockito.verify(employeeService, Mockito.atLeastOnce()).findEmployeesByFirstName(employee2.getFirstName());
+    }
+
+    @Test
     void save() throws Exception{
         EmployeeCreateDTO employeeCreateDTO = new EmployeeCreateDTO(employee1.getFirstName(), employee1.getLastName(), employee1.getMail());
         BDDMockito.given(employeeService.create(employeeCreateDTO)).willReturn(employee1);
