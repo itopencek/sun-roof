@@ -38,7 +38,7 @@ public class BranchService {
     public List<BranchDTO> findByEmployeeId(int id) {
         Optional<Employee> employee = employeeService.findById(id);
 
-        return branchRepository.findBranchByEmployees(employee).stream().map(this::toDTO).collect(Collectors.toList());
+        return branchRepository.findBranchesByEmployee(employee).stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     public BranchDTO update(int id, BranchCreateDTO branchCreateDTO) throws Exception {
