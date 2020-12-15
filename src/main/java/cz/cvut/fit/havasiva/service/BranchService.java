@@ -2,6 +2,7 @@ package cz.cvut.fit.havasiva.service;
 
 import cz.cvut.fit.havasiva.dto.BranchCreateDTO;
 import cz.cvut.fit.havasiva.dto.BranchDTO;
+import cz.cvut.fit.havasiva.dto.EmployeeDTO;
 import cz.cvut.fit.havasiva.entity.Branch;
 import cz.cvut.fit.havasiva.entity.Employee;
 import cz.cvut.fit.havasiva.repository.BranchRepository;
@@ -32,6 +33,12 @@ public class BranchService {
                 .stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    public List<BranchDTO> findByEmployeeId(int id) {
+        Optional<Employee> employee = employeeService.findById(id);
+
+        return branchRepository.findBranchByEmployees(employee).stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     public BranchDTO update(int id, BranchCreateDTO branchCreateDTO) throws Exception {

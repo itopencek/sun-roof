@@ -40,6 +40,7 @@ class BranchControllerTest {
     List<Integer> employeeIds = Arrays.asList(employee4.getId(), employee5.getId());
     List<Integer> emptyList2 = Arrays.asList();
 
+    Branch branch = new Branch("SVK", 1400, false, employees);
     BranchDTO branchDTO = new BranchDTO(1, "SVK", true, 200, employeeIds);
     BranchDTO emptyBranchDTO = new BranchDTO(2,"CZ", false, 345, emptyList2);
 
@@ -214,5 +215,25 @@ class BranchControllerTest {
                 .andExpect(MockMvcResultMatchers.status().reason(CoreMatchers.is("Branch not found!")));
 
         BDDMockito.verify(branchService, Mockito.atLeastOnce()).deleteById(branchDTO.getId());
+    }
+
+    @Test
+    void branchByEmployee() throws Exception {
+        List<BranchDTO> branches = Arrays.asList(branchDTO);
+        BDDMockito.given(branchService.findByEmployeeId(employee5.getId())).willReturn(branches);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .get("/branch/employee/{id}", employee5.getId())
+                        .contentType("application/json;charset=UTF-8")
+                        .accept("application/json;charset=UTF-8")
+        ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id", CoreMatchers.is(branchDTO.getId())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].country", CoreMatchers.is(branchDTO.getCountry())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].webStore", CoreMatchers.is(branchDTO.isWebStore())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].yearlyProfit", CoreMatchers.is(branchDTO.getYearlyProfit())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employeeIds", CoreMatchers.is(branchDTO.getEmployeeIds())));
+
+        BDDMockito.verify(branchService, Mockito.atLeastOnce()).findByEmployeeId(employee5.getId());
     }
 }

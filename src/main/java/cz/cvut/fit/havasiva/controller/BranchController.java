@@ -24,6 +24,15 @@ public class BranchController {
         return branchService.findAll();
     }
 
+    @GetMapping("/employee/{id}")
+    List<BranchDTO> branchByEmployee(@PathVariable int id) {
+        List<BranchDTO> branches = branchService.findByEmployeeId(id);
+        if(branches.size() > 0)
+            return branches;
+        else
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No branch found");
+    }
+
     @GetMapping("/{id}")
     BranchDTO byId(@PathVariable int id) {
         return branchService.findByIdAsDTO(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
