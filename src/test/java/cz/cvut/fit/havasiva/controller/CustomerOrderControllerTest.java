@@ -233,4 +233,48 @@ class CustomerOrderControllerTest {
 
         BDDMockito.verify(customerOrderService, Mockito.atLeastOnce()).deleteById(customerOrderDTO.getId());
     }
+
+    @Test
+    void updateByName() throws Exception {
+        CustomerOrder order3 = new CustomerOrder("Panel1", (double)199.9 ,"2020-09-09", "Vladimir Put", branch);
+        CustomerOrder order4 = new CustomerOrder("Panel1", (double)1252.12 ,"2020-10-10", "Vladimir In Sr.", branch);
+        CustomerOrder order5 = new CustomerOrder("Panel1", (double)12534.9 ,"2020-11-11", "Vladimir Together", branch);
+        List<CustomerOrder> orders = Arrays.asList(order3, order4, order5);
+        List<Integer> toReturn = Arrays.asList(order4.getId(), order5.getId());
+
+        BDDMockito.given(customerOrderService.updateAllByName(order4.getProductName(), 399.89, "2020-10-01")).willReturn(toReturn);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .put("/order/update/{name}/{newPrice}/{date}", order4.getProductName(), 399.89, "2020-10-01")
+                        .contentType("application/json;charset=UTF-8")
+                        .accept("application/json;charset=UTF-8")
+        ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("["+ order4.getId() +", " + order5.getId() + "]"));
+
+        BDDMockito.verify(customerOrderService, Mockito.atLeastOnce()).updateAllByName(order4.getProductName(), 399.89, "2020-10-01");
+
+    }
+
+    @Test
+    void updateByNameException() throws Exception {
+        CustomerOrder order3 = new CustomerOrder("Panel1", (double)199.9 ,"2020-09-09", "Vladimir Put", branch);
+        CustomerOrder order4 = new CustomerOrder("Panel1", (double)1252.12 ,"2020-10-10", "Vladimir In Sr.", branch);
+        CustomerOrder order5 = new CustomerOrder("Panel1", (double)12534.9 ,"2020-11-11", "Vladimir Together", branch);
+        List<CustomerOrder> orders = Arrays.asList(order3, order4, order5);
+        List<Integer> toReturn = Arrays.asList(order4.getId(), order5.getId());
+
+        BDDMockito.given(customerOrderService.updateAllByName("Panel2", 399.89, "2020-10-01")).willThrow(new Exception("No order with name Panel2 found!"));
+
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .put("/order/update/{name}/{newPrice}/{date}", "Panel2", 399.89, "2020-10-01")
+                        .contentType("application/json;charset=UTF-8")
+                        .accept("application/json;charset=UTF-8")
+        ).andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.status().reason(CoreMatchers.is("No order with name Panel2 found!")));
+
+        BDDMockito.verify(customerOrderService, Mockito.atLeastOnce()).updateAllByName("Panel2", 399.89, "2020-10-01");
+
+    }
 }

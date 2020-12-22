@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -136,11 +137,30 @@ class CustomerOrderServiceTest {
     }
 
     @Test
-    void deleteById() throws Exception{
+    void deleteById() throws Exception {
         BDDMockito.given(orderRepository.findById(order.getId())).willReturn(Optional.of(order));
 
         orderService.deleteById(order.getId());
 
         Mockito.verify(orderRepository, Mockito.atLeastOnce()).deleteById(order.getId());
+    }
+
+    @Test
+    void updateAllByName() throws Exception {
+        CustomerOrder order3 = new CustomerOrder("Panel1", (double)199.9 ,"2020-09-09", "Vladimir Put", branch);
+        CustomerOrder order4 = new CustomerOrder("Panel1", (double)1252.12 ,"2020-10-10", "Vladimir In Sr.", branch);
+        CustomerOrder order5 = new CustomerOrder("Panel1", (double)12534.9 ,"2020-11-11", "Vladimir Together", branch);
+        List<CustomerOrder> orders = Arrays.asList(order3, order4, order5);
+        List<Integer> toReturn = Arrays.asList(order4.getId(), order5.getId());
+
+        BDDMockito.given(orderRepository.findAllByProductName(order4.getProductName())).willReturn(orders);
+
+        Assertions.assertEquals(toReturn, orderService.updateAllByName(order4.getProductName(), 399.89, "2020-10-01"));
+
+        order4.setPrice(399.89);
+        order5.setPrice(399.89);
+        List<CustomerOrder> ordersNewPrice = Arrays.asList(order3, order4, order5);
+        Mockito.verify(orderRepository, Mockito.atLeastOnce()).saveAll(ordersNewPrice);
+        Mockito.verify(orderRepository, Mockito.atLeastOnce()).findAllByProductName(order4.getProductName());
     }
 }
