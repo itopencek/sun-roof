@@ -20,5 +20,9 @@ from the root directory of this project.
 
 Client side of this project is in its own repository [here](https://gitlab.fit.cvut.cz/havasiva/sun-roof-client).
 
+## Update
+
+Added new REST operation, which updates all orders with given name and after given date to a certain price.
+
 ### Author
 Ivan Havasi
