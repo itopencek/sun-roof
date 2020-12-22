@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -26,6 +27,17 @@ public class CustomerOrderController {
     @GetMapping("/{id}")
     CustomerOrderDTO byId(@PathVariable int id) {
         return orderService.findByIdAsDTO(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping("/update/{name}/{newPrice}/{date}")
+    List<Integer> updateByName(@PathVariable String name, @PathVariable double newPrice, @PathVariable String date) {
+        List<Integer> ids = new ArrayList<>();
+        try{
+            ids = orderService.updateAllByName(name, newPrice, date);
+            return ids;
+        } catch(Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
     @GetMapping("/all/{branchId}")

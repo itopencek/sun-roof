@@ -13,4 +13,6 @@ public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, In
     Optional<CustomerOrder> findByMadeBy(String madeBy);
 
     List<CustomerOrder> findByOrderedFrom(Optional<Branch> branch);
+
+    List<CustomerOrder> findAllByProductName(String productName);
 }

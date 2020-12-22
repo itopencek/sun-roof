@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -81,6 +84,31 @@ public class CustomerOrderService {
         order.setProductName(orderDTO.getProductName());
 
         return toDTO(order);
+    }
+
+    public List<Integer> updateAllByName(String name, double newPrice, String madeAfter) throws Exception {
+        List<CustomerOrder> orders = orderRepository.findAllByProductName(name);//.stream().map(this::toDTO).collect(Collectors.toList());
+        List<Integer> ids = new ArrayList<>();
+
+        if(orders.isEmpty())
+            throw new Exception("No order with name " + name + " found!");
+
+        for (CustomerOrder order: orders) {
+            // first date is greater than second
+            if(order.getDate().compareTo(madeAfter) > 0)
+            {
+                // update price
+                order.setPrice(newPrice);
+                // add to List of integer to return
+                ids.add(order.getId());
+            }
+        }
+
+        // save orders
+        orderRepository.saveAll(orders);
+
+        // returning updated ids
+        return ids;
     }
 
     public void deleteById(int id) throws Exception{
