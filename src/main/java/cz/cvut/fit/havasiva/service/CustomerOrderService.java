@@ -87,7 +87,7 @@ public class CustomerOrderService {
     }
 
     public List<Integer> updateAllByName(String name, double newPrice, String madeAfter) throws Exception {
-        List<CustomerOrder> orders = orderRepository.findAllByProductName(name);//.stream().map(this::toDTO).collect(Collectors.toList());
+        List<CustomerOrder> orders = orderRepository.findAllByProductName(name);
         List<Integer> ids = new ArrayList<>();
 
         if(orders.isEmpty())
